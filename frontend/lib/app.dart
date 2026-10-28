@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'core/theme/app_theme.dart';
-import 'features/home/presentation/pages/home_page.dart';
+import 'features/shell/presentation/pages/main_shell.dart';
 
 class QuizMotionApp extends StatelessWidget {
   const QuizMotionApp({super.key});
@@ -13,7 +14,7 @@ class QuizMotionApp extends StatelessWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.light,
-      home: const HomePage(),
+      home: const MainShell(),
     );
   }
 }
