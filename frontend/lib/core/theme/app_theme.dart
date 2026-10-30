@@ -16,43 +16,42 @@ abstract final class AppColors {
 }
 
 abstract final class AppTheme {
-  static ThemeData get light => ThemeData(
-    useMaterial3: true,
-    scaffoldBackgroundColor: AppColors.background,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.light,
-    ).copyWith(primary: AppColors.primary, surface: AppColors.surface),
-    fontFamily: 'Roboto',
-    textTheme: const TextTheme(
-      headlineSmall: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.w700,
-        color: AppColors.text,
-        letterSpacing: -0.6,
-      ),
-      titleLarge: TextStyle(
-        fontSize: 19,
-        fontWeight: FontWeight.w700,
-        color: AppColors.text,
-      ),
-      titleMedium: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: AppColors.text,
-      ),
-      bodyMedium: TextStyle(fontSize: 14, color: AppColors.muted),
-    ),
-  );
+  static ThemeData get light => _build(Brightness.light);
+  static ThemeData get dark => _build(Brightness.dark);
 
-  static ThemeData get dark => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF11111C),
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.dark,
-    ),
-    fontFamily: 'Roboto',
-  );
+  static ThemeData _build(Brightness brightness) {
+    final dark = brightness == Brightness.dark;
+    const primary = AppColors.primary;
+    final scheme = ColorScheme.fromSeed(
+      seedColor: primary,
+      brightness: brightness,
+      surface: dark ? const Color(0xFF191A29) : Colors.white,
+    );
+    final text = dark ? const Color(0xFFF3F2FF) : AppColors.text;
+    final muted = dark ? const Color(0xFFB8B7CC) : AppColors.muted;
+    return ThemeData(
+      useMaterial3: true,
+      brightness: brightness,
+      scaffoldBackgroundColor: dark ? const Color(0xFF0D101B) : AppColors.background,
+      colorScheme: scheme.copyWith(primary: AppColors.primary, surface: dark ? const Color(0xFF191A29) : Colors.white),
+      cardColor: dark ? const Color(0xFF191A29) : Colors.white,
+      dividerColor: dark ? const Color(0xFF303247) : AppColors.border,
+      appBarTheme: AppBarTheme(
+        backgroundColor: dark ? const Color(0xFF0D101B) : AppColors.background,
+        foregroundColor: text,
+        elevation: 0,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: muted),
+        labelStyle: TextStyle(color: muted),
+      ),
+      textTheme: TextTheme(
+        headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: text, letterSpacing: -.6),
+        titleLarge: TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: text),
+        titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: text),
+        bodyMedium: TextStyle(fontSize: 14, color: muted),
+      ),
+      fontFamily: 'Roboto',
+    );
+  }
 }

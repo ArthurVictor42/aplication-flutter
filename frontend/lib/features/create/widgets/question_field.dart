@@ -33,7 +33,7 @@ class QuestionField extends StatelessWidget {
         Container(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.border),
           ),
@@ -46,7 +46,7 @@ class QuestionField extends StatelessWidget {
                 maxLines: 5,
                 // Limita a 180 caracteres sem mostrar o contador padrão do Flutter.
                 inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
-                style: const TextStyle(fontSize: 16, color: AppColors.text),
+                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
                 decoration: const InputDecoration(
                   hintText: 'Digite o enunciado da pergunta com clareza...',
                   hintStyle: TextStyle(fontSize: 16, color: AppColors.hint),

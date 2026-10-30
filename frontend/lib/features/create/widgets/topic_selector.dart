@@ -104,10 +104,10 @@ class _TopicRow extends StatelessWidget {
             children: [
               Text(
                 topic.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.text,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               Text(

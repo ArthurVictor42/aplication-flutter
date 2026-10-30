@@ -22,7 +22,7 @@ class OptionTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.border),
       ),
@@ -34,7 +34,7 @@ class OptionTile extends StatelessWidget {
             height: 36,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: selected ? AppColors.primary : AppColors.palePurple,
+              color: selected ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF303247) : AppColors.palePurple),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
@@ -50,7 +50,7 @@ class OptionTile extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              style: const TextStyle(fontSize: 14, color: AppColors.text),
+              style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
               decoration: const InputDecoration(
                 hintText: 'Digite a alternativa...',
                 hintStyle: TextStyle(fontSize: 14, color: AppColors.hint),

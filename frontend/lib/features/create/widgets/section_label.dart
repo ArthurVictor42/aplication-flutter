@@ -25,14 +25,14 @@ class SectionLabel extends StatelessWidget {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: AppColors.text,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
-        if (trailing != null) trailing!,
+        if (trailing != null) ?trailing,
       ],
     );
   }

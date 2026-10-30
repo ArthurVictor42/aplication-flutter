@@ -20,16 +20,20 @@ class CreateHeader extends StatelessWidget {
           child: InkWell(
             onTap: onBack,
             borderRadius: BorderRadius.circular(12),
-            child: const SizedBox(
+            child: SizedBox(
               width: 40,
               height: 40,
-              child: Icon(Icons.arrow_back, size: 20, color: AppColors.text),
+              child: Icon(
+                Icons.arrow_back,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
         ),
         const SizedBox(width: 12),
         // Expanded ocupa o espaço que sobra e empurra o chip para a direita.
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,7 +52,7 @@ class CreateHeader extends StatelessWidget {
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   letterSpacing: -.3,
-                  color: AppColors.text,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],

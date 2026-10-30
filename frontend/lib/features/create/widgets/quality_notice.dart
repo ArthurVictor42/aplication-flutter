@@ -11,7 +11,7 @@ class QualityNotice extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.palePurple.withValues(alpha: .5),
+        color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF24243B) : AppColors.palePurple.withValues(alpha: .5),
         borderRadius: BorderRadius.circular(14),
       ),
       // Sem const aqui: o CircleAvatar usa withValues, que não é constante.
@@ -28,7 +28,7 @@ class QualityNotice extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,7 +37,7 @@ class QualityNotice extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.text,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 2),
@@ -47,7 +47,7 @@ class QualityNotice extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.35, // espaçamento entre linhas
-                    color: AppColors.muted,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],

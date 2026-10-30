@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/network/quiz_api_service.dart';
 import '../../../home/data/quiz_topics.dart';
 import '../../../home/presentation/widgets/home_header.dart';
 import '../../widgets/create_header.dart';
@@ -65,17 +66,36 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
     setState(() => _correctIndex = null);
   }
 
-  void _submit() {
-    // Por enquanto só confirma na tela. Com o backend pronto, aqui você
-    // monta o objeto da pergunta e envia para a API.
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Pergunta aplicada!')));
-    _clear();
+  Future<void> _submit() async {
+    final alternativas = List.generate(
+      _optionControllers.length,
+      (i) => <String, dynamic>{
+        'texto_alternativa': _optionControllers[i].text.trim(),
+        'correta': _correctIndex == i,
+      },
+    );
+
+    try {
+      await QuizApiService.criarPergunta(
+        cabecalho: _questionController.text.trim(),
+        tema: quizTopics[_topicIndex].title,
+        alternativas: alternativas,
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Pergunta salva no MySQL com sucesso!')),
+      );
+      _clear();
+    } catch (e) {
+      if (!mounted) return;
+      final message = e.toString().replaceFirst('Exception: ', '');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Não foi possível salvar: $message')),
+      );
+    }
   }
 
-  /// Converte os temas da home para o formato do seletor.
-  /// TODO: abra domain/quiz_topic.dart e troque `code` e `subtitle`
-  /// pelos campos reais, se existirem.
+  /// Converte os temas disponíveis para o formato visual do seletor.
   List<TopicOption> get _topicOptions => quizTopics
       .map(
         (t) => TopicOption(
