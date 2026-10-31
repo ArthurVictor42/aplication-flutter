@@ -1,10 +1,10 @@
 # Quiz Motion — Backend
 
-API REST em Dart com Shelf e MySQL. A aplicação utiliza camadas para separar HTTP, regras de negócio e persistência.
+API REST em Dart com Shelf e MySQL. A arquitetura separa HTTP, regras de negócio e persistência.
 
 ## Requisitos e configuração
 
-- Dart SDK compatível com o `pubspec.yaml`.
+- Dart SDK compatível com `pubspec.yaml`.
 - MySQL Server ativo.
 - Banco e tabelas criados com `database/schema.sql`.
 
@@ -22,42 +22,54 @@ O servidor padrão inicia em `http://localhost:8080`. Não versione nem comparti
 
 ```text
 lib/src/
-├── config/                 # conexão MySQL e carregamento do .env
-├── http/                   # respostas JSON padronizadas
+├── config/                  # conexão MySQL e carregamento do .env
+├── http/                    # respostas JSON padronizadas
 └── questions/
-    ├── controllers/        # tradução HTTP -> chamadas do serviço
-    ├── dtos/               # validação estrutural/conversão do JSON recebido
-    ├── models/             # modelos de pergunta e alternativa
-    ├── repositories/       # SQL e transações MySQL
-    ├── routes/             # definição dos endpoints Shelf
+    ├── controllers/         # recebe HTTP e converte em resposta
+    ├── dtos/                # estrutura e validação do JSON de entrada
+    ├── models/              # pergunta e alternativa
+    ├── repositories/        # consultas e transações SQL
+    ├── routes/              # registro dos endpoints Shelf
     └── services/
-        ├── question_service.dart       # contrato (interface)
-        └── question_service_impl.dart  # regras de negócio
+        ├── question_service.dart
+        └── question_service_impl.dart
 ```
 
 ## Fluxo interno
 
-`Request HTTP → Route → Controller → DTO (quando aplicável) → QuestionService → QuestionServiceImpl → QuestionRepository → MySQL`.
+`HTTP Request → Route → Controller → DTO → QuestionService → QuestionServiceImpl → QuestionRepository → MySQL`.
 
-- **Routes** registram os caminhos e direcionam para o controller.
-- **Controller** interpreta parâmetros e corpo HTTP, chama o serviço e transforma o resultado em resposta HTTP.
-- **DTO** converte o JSON de criação para objetos tipados.
-- **Service** define o contrato da funcionalidade.
-- **ServiceImpl** aplica regras: limites, campos obrigatórios, quantidade de alternativas e exatamente uma resposta correta.
-- **Repository** executa consultas e transações SQL.
-- **Models** representam os dados e controlam a serialização JSON.
+- **Routes** associam cada endpoint a um método do controller.
+- **Controller** interpreta parâmetros/corpo HTTP e produz respostas JSON.
+- **DTO** converte os dados recebidos para estruturas tipadas.
+- **QuestionService** define o contrato da funcionalidade.
+- **QuestionServiceImpl** aplica regras de negócio, limites e temas permitidos.
+- **QuestionRepository** executa SQL e transações.
+- **Models** representam e serializam perguntas e alternativas.
 
 A criação de uma pergunta e suas alternativas ocorre em uma transação: se uma inserção falhar, o banco reverte o conjunto.
+
+## Temas permitidos
+
+O domínio aceita somente:
+
+- `Inglês`
+- `Gerais`
+- `Tecnologia`
+
+A validação ocorre no `QuestionServiceImpl`. O endpoint de temas retorna apenas temas oficiais que tenham perguntas cadastradas. A interface Flutter apresenta sempre as três opções.
+
+Para atualizar uma base já existente, faça backup e execute `database/migrate_topics.sql`. O script normaliza nomes conhecidos e apresenta registros restantes para revisão manual. Nenhuma pergunta é apagada automaticamente.
 
 ## Endpoints
 
 | Método | Rota | Descrição |
 |---|---|---|
 | GET | `/health` | Verifica conectividade com o banco |
-| GET | `/api/temas` | Lista temas existentes |
+| GET | `/api/temas` | Lista temas oficiais existentes |
 | GET | `/api/perguntas?limite=10` | Lista perguntas aleatórias |
 | GET | `/api/perguntas?tema=Tecnologia&limite=10` | Filtra por tema |
-| GET | `/api/perguntas/1` | Busca uma pergunta |
+| GET | `/api/perguntas/1` | Busca uma pergunta sem revelar resposta correta |
 | POST | `/api/perguntas` | Cria pergunta e alternativas |
 | POST | `/api/perguntas/1/resposta` | Confere alternativa selecionada |
 | DELETE | `/api/perguntas/1` | Exclui pergunta e alternativas |
@@ -103,6 +115,6 @@ Resposta:
 
 O middleware permite CORS para desenvolvimento. Em produção, restrinja as origens permitidas.
 
-## Escopo e limitações
+## Escopo atual
 
-O schema atual contém perguntas, alternativas e temas derivados. Não há usuários, autenticação, histórico de partidas, ranking, pontuação persistente ou preferências de usuário. O frontend calcula o resultado da sessão localmente. Para implementar recursos persistentes, será necessário modelar essas entidades e criar endpoints específicos.
+O banco contém perguntas e alternativas. Não há usuários, autenticação, histórico de partidas, ranking, pontuação persistente ou preferências de usuário. O Flutter calcula os resultados da sessão localmente. A tela Desafios permanece como Em desenvolvimento.

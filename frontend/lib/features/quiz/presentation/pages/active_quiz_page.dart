@@ -18,6 +18,7 @@ class _ActiveQuizPageState extends State<ActiveQuizPage> {
   int? _selected;
   bool _checking = false;
   int _correct = 0;
+  final List<Map<String, dynamic>> _answers = [];
   final Stopwatch _stopwatch = Stopwatch()..start();
 
   Map<String, dynamic> get _question => widget.launch.questions[_index];
@@ -34,6 +35,17 @@ class _ActiveQuizPageState extends State<ActiveQuizPage> {
       );
       if (!mounted) return;
       if (isCorrect) _correct++;
+      final selectedAlternative = _alternatives[_selected!];
+      final correctAlternative = _alternatives.firstWhere(
+        (alternative) => alternative['correta'] == true || alternative['correta'] == 1,
+        orElse: () => <String, dynamic>{},
+      );
+      _answers.add({
+        'pergunta': (_question['cabecalho'] ?? '').toString(),
+        'selecionada': (selectedAlternative['texto_alternativa'] ?? '').toString(),
+        'resposta_correta': correctAlternative['texto_alternativa']?.toString(),
+        'correta': isCorrect,
+      });
       if (_index == widget.launch.questions.length - 1) {
         _stopwatch.stop();
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -42,6 +54,8 @@ class _ActiveQuizPageState extends State<ActiveQuizPage> {
             correct: _correct,
             elapsed: _stopwatch.elapsed,
             onHome: widget.onExit,
+            theme: widget.launch.theme ?? 'Todos',
+            answers: List.unmodifiable(_answers),
           ),
         ));
       } else {
@@ -62,7 +76,7 @@ class _ActiveQuizPageState extends State<ActiveQuizPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: widget.onExit, icon: const Icon(Icons.arrow_back)),
-        title: const Text('Quiz em andamento'),
+        title: const Text('Active Quiz Session'),
         centerTitle: true,
       ),
       body: SafeArea(child: Center(child: ConstrainedBox(

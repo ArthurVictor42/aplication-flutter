@@ -4,11 +4,17 @@ import '../repositories/question_repository.dart';
 import 'question_service.dart';
 
 class QuestionServiceImpl implements QuestionService {
+  static const allowedThemes = <String>['Inglês', 'Gerais', 'Tecnologia'];
   QuestionServiceImpl(this.repository);
   final QuestionRepository repository;
 
   @override
-  Future<List<String>> listarTemas() => repository.listarTemas();
+  Future<List<String>> listarTemas() async {
+    final existing = await repository.listarTemas();
+    return allowedThemes.where(
+      (theme) => existing.any((item) => item.toLowerCase() == theme.toLowerCase()),
+    ).toList();
+  }
 
   @override
   Future<List<QuestionModel>> listar({String? tema, int limite = 10}) {
@@ -32,6 +38,16 @@ class QuestionServiceImpl implements QuestionService {
     if (dto.theme.isEmpty || dto.theme.length > 30) {
       throw ArgumentError('Informe um tema com até 30 caracteres.');
     }
+    String? canonicalTheme;
+    for (final theme in allowedThemes) {
+      if (theme.toLowerCase() == dto.theme.toLowerCase()) {
+        canonicalTheme = theme;
+        break;
+      }
+    }
+    if (canonicalTheme == null) {
+      throw ArgumentError('Tema inválido. Utilize Inglês, Gerais ou Tecnologia.');
+    }
     if (dto.alternatives.length < 2 || dto.alternatives.length > 6) {
       throw ArgumentError('Envie entre 2 e 6 alternativas.');
     }
@@ -54,7 +70,7 @@ class QuestionServiceImpl implements QuestionService {
 
     return repository.criar(
       cabecalho: dto.header,
-      tema: dto.theme,
+      tema: canonicalTheme,
       alternativas: alternatives,
     );
   }

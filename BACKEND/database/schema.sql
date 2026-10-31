@@ -1,7 +1,7 @@
-CREATE DATABASE IF NOT EXISTS quiz_motion
+CREATE DATABASE IF NOT EXISTS questionapp
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE quiz_motion;
+USE questionapp;
 
 CREATE TABLE IF NOT EXISTS question (
     id_questao INT NOT NULL AUTO_INCREMENT,
