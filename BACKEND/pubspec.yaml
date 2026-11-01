@@ -1,0 +1,12 @@
+name: quiz_motion_backend
+description: API REST em Dart para o aplicativo Quiz Motion, conectada ao MySQL.
+version: 1.0.0
+publish_to: none
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+dependencies:
+  mysql_dart: ^3.0.3
+  shelf: ^1.4.2
+  shelf_router: ^1.1.4
+dev_dependencies:
+  lints: ^6.0.0

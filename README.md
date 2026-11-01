@@ -1,37 +1,31 @@
-# Quiz Motion — Flutter
+# Quiz Motion
 
-Implementação da tela inicial do protótipo Quiz Motion, com layout responsivo e componentes reutilizáveis.
+Projeto acadêmico de aplicativo de perguntas e respostas.
 
-## Estrutura
+## Componentes
 
-```text
-lib/
-├── app.dart
-├── main.dart
-├── core/
-│   └── theme/app_theme.dart
-└── features/
-    └── home/
-        ├── data/quiz_topics.dart
-        ├── domain/quiz_topic.dart
-        └── presentation/
-            ├── pages/home_page.dart
-            └── widgets/
-                ├── challenge_card.dart
-                ├── home_bottom_nav.dart
-                ├── home_header.dart
-                ├── score_summary.dart
-                ├── streak_badge.dart
-                └── topic_tile.dart
-assets/
-├── images/hero_quiz.png
-└── prototypes/   # referências de todas as telas, tema claro e escuro
-```
+- `frontend/`: aplicativo Flutter.
+- `BACKEND/`: API REST em Dart com Shelf.
+- `BACKEND/database/`: schema inicial e migração segura dos temas.
 
-## Executar
+## Temas oficiais
 
-1. Abra a pasta `question` no VS Code ou Android Studio.
-2. Execute `flutter pub get`.
-3. Execute `flutter run`.
+A experiência do aplicativo trabalha com três categorias: **Inglês**, **Gerais** e **Tecnologia**.
 
-A interface usa componentes Flutter/Material e não adiciona dependências de terceiros. A seleção de tema e quantidade de perguntas já atualiza o estado visual. O botão Jogar está preparado como ponto de integração com o fluxo de perguntas do aplicativo.
+## Iniciar o projeto
+
+1. Configure o MySQL e o arquivo `BACKEND/.env`.
+2. Siga as instruções de `BACKEND/README.md` para iniciar a API.
+3. Em outro terminal, siga `frontend/README.md` para iniciar o Flutter.
+
+A API precisa estar ativa para cadastrar perguntas e iniciar rodadas.
+
+## Arquitetura e fluxo
+
+O Flutter chama a API por HTTP. No backend, as requisições seguem `Route → Controller → Service → Repository → MySQL`. As regras de negócio ficam em `QuestionServiceImpl`.
+
+Durante uma rodada, as perguntas são carregadas do banco, as respostas são validadas pela API e o resumo é calculado no frontend. Não existe persistência de histórico, ranking ou sequência de dias nesta versão.
+
+## Design
+
+As referências visuais fornecidas estão em `frontend/assets/prototypes/`. Elas servem como material de comparação visual; as telas funcionais são implementadas em Flutter.

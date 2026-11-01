@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
+import 'core/theme/theme_controller.dart';
 
-void main() => runApp(const QuizMotionApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ThemeController.instance.load();
+  runApp(const QuizMotionApp());
+}
