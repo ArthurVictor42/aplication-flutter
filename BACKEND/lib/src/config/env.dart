@@ -1,7 +1,5 @@
 import 'dart:io';
 
-/// Carregador simples de variáveis de ambiente de um arquivo .env.
-/// Variáveis já definidas no sistema operacional têm prioridade.
 class Env {
   static Future<void> load([String path = '.env']) async {
     final file = File(path);
@@ -21,8 +19,7 @@ class Env {
         value = value.substring(1, value.length - 1);
       }
       if (key.isNotEmpty) {
-        Platform.environment; // Documenta que o ambiente do processo é suportado.
-        // Não sobrescreve variáveis fornecidas pelo sistema operacional.
+        Platform.environment;
         if (_processValue(key) == null) _fileValues[key] = value;
       }
     }

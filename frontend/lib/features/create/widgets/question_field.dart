@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import '../../../../core/theme/app_theme.dart';
 import 'section_label.dart';
 
-/// Rótulo "Criar pergunta" + contador + card com o campo de texto.
 class QuestionField extends StatelessWidget {
   const QuestionField({super.key, required this.controller});
 
@@ -20,7 +19,6 @@ class QuestionField extends StatelessWidget {
         SectionLabel(
           icon: Icons.edit_note_rounded,
           title: 'Criar pergunta',
-          // Redesenha só o contador quando o texto do controller muda.
           trailing: ValueListenableBuilder<TextEditingValue>(
             valueListenable: controller,
             builder: (context, value, _) => Text(
@@ -44,13 +42,15 @@ class QuestionField extends StatelessWidget {
                 controller: controller,
                 minLines: 3,
                 maxLines: 5,
-                // Limita a 180 caracteres sem mostrar o contador padrão do Flutter.
                 inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
-                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 decoration: const InputDecoration(
                   hintText: 'Digite o enunciado da pergunta com clareza...',
                   hintStyle: TextStyle(fontSize: 16, color: AppColors.hint),
-                  border: InputBorder.none, // tira a borda padrão do TextField
+                  border: InputBorder.none,
                   isDense: true,
                   contentPadding: EdgeInsets.zero,
                 ),

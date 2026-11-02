@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
-/// Título de seção: [ícone] Título ........ [trailing]
-/// Usado em "Tema / Matéria", "Criar pergunta" e "Alternativas".
 class SectionLabel extends StatelessWidget {
   const SectionLabel({
     super.key,
@@ -14,7 +12,7 @@ class SectionLabel extends StatelessWidget {
 
   final IconData icon;
   final String title;
-  final Widget? trailing; // widget opcional na ponta direita
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,6 @@ class ActiveStatus extends StatelessWidget {
   }
 }
 
-/// Pílula de texto pequeno, como "Marque a correta".
 class HintPill extends StatelessWidget {
   const HintPill(this.text, {super.key});
 

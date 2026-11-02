@@ -32,8 +32,13 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
-      scaffoldBackgroundColor: dark ? const Color(0xFF0D101B) : AppColors.background,
-      colorScheme: scheme.copyWith(primary: AppColors.primary, surface: dark ? const Color(0xFF191A29) : Colors.white),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF0D101B)
+          : AppColors.background,
+      colorScheme: scheme.copyWith(
+        primary: AppColors.primary,
+        surface: dark ? const Color(0xFF191A29) : Colors.white,
+      ),
       cardColor: dark ? const Color(0xFF191A29) : Colors.white,
       dividerColor: dark ? const Color(0xFF303247) : AppColors.border,
       appBarTheme: AppBarTheme(
@@ -46,9 +51,22 @@ abstract final class AppTheme {
         labelStyle: TextStyle(color: muted),
       ),
       textTheme: TextTheme(
-        headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: text, letterSpacing: -.6),
-        titleLarge: TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: text),
-        titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: text),
+        headlineSmall: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: text,
+          letterSpacing: -.6,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 19,
+          fontWeight: FontWeight.w700,
+          color: text,
+        ),
+        titleMedium: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: text,
+        ),
         bodyMedium: TextStyle(fontSize: 14, color: muted),
       ),
       fontFamily: 'Roboto',

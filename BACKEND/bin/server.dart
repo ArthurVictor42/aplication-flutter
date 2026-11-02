@@ -18,7 +18,6 @@ Future<void> main() async {
   final host = Env.get('API_HOST', fallback: '0.0.0.0');
   final port = Env.getInt('API_PORT', fallback: 8080);
 
-  // Composição das dependências: Repository -> Service -> Controller -> Routes.
   final repository = QuestionRepository();
   final QuestionService service = QuestionServiceImpl(repository);
   final controller = QuestionController(service);

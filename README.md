@@ -1,6 +1,8 @@
 # Quiz Motion
 
 Projeto acadêmico de aplicativo de perguntas e respostas.
+Grupo: Arthur victor, Wagner Francisco, Kauã Santiago, Thiago Jose, Wallison Gabriel, João Victor
+Link do figma: 
 
 ## Componentes
 

@@ -17,12 +17,14 @@ class _MainShellState extends State<MainShell> {
   int _index = 0;
 
   void _startQuiz(QuizLaunch launch) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ActiveQuizPage(
-        launch: launch,
-        onExit: () => Navigator.of(context).pop(),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ActiveQuizPage(
+          launch: launch,
+          onExit: () => Navigator.of(context).pop(),
+        ),
       ),
-    ));
+    );
   }
 
   @override

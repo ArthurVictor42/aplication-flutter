@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
-/// Dados que o seletor mostra. Separar isso do QuizTopic deixa o widget
-/// independente do resto do projeto.
 class TopicOption {
   const TopicOption({
     required this.code,
@@ -11,12 +9,11 @@ class TopicOption {
     required this.subtitle,
   });
 
-  final String code; // sigla: "EN"
-  final String title; // "Inglês"
-  final String subtitle; // "Vocabulário, Expressões & Gramática"
+  final String code;
+  final String title;
+  final String subtitle;
 }
 
-/// Card com o tema escolhido. Ao tocar, abre a lista de temas.
 class TopicSelector extends StatelessWidget {
   const TopicSelector({
     super.key,
@@ -38,21 +35,19 @@ class TopicSelector extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
-      // DropdownButtonHideUnderline remove a linha padrão do dropdown.
       child: DropdownButtonHideUnderline(
         child: DropdownButton<int>(
           value: selectedIndex,
           isExpanded: true,
-          itemHeight: 68, // o padrão (48) cortaria o subtítulo
+          itemHeight: 68,
           borderRadius: BorderRadius.circular(14),
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.muted,
           ),
-          // Como o item aparece com o dropdown FECHADO.
           selectedItemBuilder: (context) =>
               topics.map((t) => _TopicRow(topic: t)).toList(),
-          // Como cada item aparece na lista ABERTA.
+
           items: List.generate(
             topics.length,
             (i) => DropdownMenuItem(
@@ -61,7 +56,7 @@ class TopicSelector extends StatelessWidget {
             ),
           ),
           onChanged: (i) {
-            if (i != null) onChanged(i); // i pode ser null, então checamos
+            if (i != null) onChanged(i);
           },
         ),
       ),
@@ -113,7 +108,7 @@ class _TopicRow extends StatelessWidget {
               Text(
                 topic.subtitle,
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis, // "..." se não couber
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 11.5, color: AppColors.muted),
               ),
             ],

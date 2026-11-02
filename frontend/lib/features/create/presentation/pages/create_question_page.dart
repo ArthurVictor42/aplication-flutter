@@ -14,7 +14,6 @@ import '../../widgets/topic_selector.dart';
 class CreateQuestionPage extends StatefulWidget {
   const CreateQuestionPage({super.key, this.onBack});
 
-  /// Chamado pelo botão voltar. O shell passa a troca para a aba 0.
   final VoidCallback? onBack;
 
   @override
@@ -22,7 +21,6 @@ class CreateQuestionPage extends StatefulWidget {
 }
 
 class _CreateQuestionPageState extends State<CreateQuestionPage> {
-  // --- Estado: tudo que a tela precisa lembrar ---
   final _questionController = TextEditingController();
   final _optionControllers = List.generate(4, (_) => TextEditingController());
   int? _correctIndex; // null = nenhuma marcada ainda
@@ -31,8 +29,7 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
   @override
   void initState() {
     super.initState();
-    // Qualquer campo que mude redesenha a tela, para o botão
-    // "Aplicar Pergunta" habilitar/desabilitar.
+
     _questionController.addListener(_refresh);
     for (final c in _optionControllers) {
       c.addListener(_refresh);
@@ -50,9 +47,6 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
     super.dispose();
   }
 
-  // --- Regras ---
-
-  /// Pergunta preenchida + 4 alternativas preenchidas + uma correta marcada.
   bool get _isValid =>
       _questionController.text.trim().isNotEmpty &&
       _optionControllers.every((c) => c.text.trim().isNotEmpty) &&
@@ -95,7 +89,6 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
     }
   }
 
-  /// Converte os temas disponíveis para o formato visual do seletor.
   List<TopicOption> get _topicOptions => quizTopics
       .map(
         (t) => TopicOption(
@@ -106,12 +99,9 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
       )
       .toList();
 
-  // --- Interface ---
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Header fixo + conteúdo rolável, como na home.
       body: Column(
         children: [
           HomeHeader(),
@@ -149,7 +139,6 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
                         trailing: HintPill('Marque a correta'),
                       ),
                       const SizedBox(height: 8),
-                      // String.fromCharCode(65 + i): 65 = 'A', 66 = 'B'...
                       ...List.generate(
                         4,
                         (i) => Padding(
@@ -170,7 +159,6 @@ class _CreateQuestionPageState extends State<CreateQuestionPage> {
                       SizedBox(
                         height: 56,
                         child: ElevatedButton.icon(
-                          // onPressed null desabilita o botão automaticamente.
                           onPressed: _isValid ? _submit : null,
                           icon: const Icon(Icons.add_task_rounded, size: 22),
                           label: const Text(

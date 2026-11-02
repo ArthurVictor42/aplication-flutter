@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
-/// Cabeçalho: botão voltar, "EDITOR DE CONTEÚDO" + título e chip "Modo Rápido".
 class CreateHeader extends StatelessWidget {
   const CreateHeader({super.key, this.onBack, this.onQuickMode});
 
-  final VoidCallback? onBack; // null = botão sem ação
-  final VoidCallback? onQuickMode; // null = chip só visual
+  final VoidCallback? onBack;
+  final VoidCallback? onQuickMode;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Material dá a cor de fundo; InkWell dá o efeito de toque por cima dela.
         Material(
           color: AppColors.palePurple,
           borderRadius: BorderRadius.circular(12),
@@ -32,7 +30,6 @@ class CreateHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        // Expanded ocupa o espaço que sobra e empurra o chip para a direita.
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,8 +64,7 @@ class CreateHeader extends StatelessWidget {
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               child: Row(
-                mainAxisSize:
-                    MainAxisSize.min, // chip só do tamanho do conteúdo
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.arrow_back_ios_new,

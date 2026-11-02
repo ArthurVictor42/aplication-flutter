@@ -23,8 +23,10 @@ class QuizApiService {
   static Future<List<String>> listarTemas() async {
     final response = await _get('/temas');
     final data = _decodeList(response);
-    return data.map((item) => (item['tema'] ?? '').toString())
-        .where((tema) => tema.isNotEmpty).toList();
+    return data
+        .map((item) => (item['tema'] ?? '').toString())
+        .where((tema) => tema.isNotEmpty)
+        .toList();
   }
 
   static Future<List<Map<String, dynamic>>> buscarPerguntas({
@@ -40,11 +42,15 @@ class QuizApiService {
     final response = await _request(() => http.get(uri));
     final body = _decode(response);
     if (response.statusCode != 200) {
-      throw QuizApiException(_message(body, 'Não foi possível buscar perguntas.'));
+      throw QuizApiException(
+        _message(body, 'Não foi possível buscar perguntas.'),
+      );
     }
     final questions = body['perguntas'];
     if (questions is! List) {
-      throw const QuizApiException('A API retornou uma lista de perguntas inválida.');
+      throw const QuizApiException(
+        'A API retornou uma lista de perguntas inválida.',
+      );
     }
     return questions.cast<Map<String, dynamic>>();
   }
@@ -59,18 +65,22 @@ class QuizApiService {
     required String tema,
     required List<Map<String, dynamic>> alternativas,
   }) async {
-    final response = await _request(() => http.post(
-      Uri.parse('$baseUrl/perguntas'),
-      headers: {'Content-Type': 'application/json; charset=utf-8'},
-      body: jsonEncode({
-        'cabecalho': cabecalho,
-        'tema': tema,
-        'alternativas': alternativas,
-      }),
-    ));
+    final response = await _request(
+      () => http.post(
+        Uri.parse('$baseUrl/perguntas'),
+        headers: {'Content-Type': 'application/json; charset=utf-8'},
+        body: jsonEncode({
+          'cabecalho': cabecalho,
+          'tema': tema,
+          'alternativas': alternativas,
+        }),
+      ),
+    );
     final body = _decode(response);
     if (response.statusCode != 201) {
-      throw QuizApiException(_message(body, 'Não foi possível cadastrar a pergunta.'));
+      throw QuizApiException(
+        _message(body, 'Não foi possível cadastrar a pergunta.'),
+      );
     }
     return body;
   }
@@ -79,23 +89,31 @@ class QuizApiService {
     required int idPergunta,
     required int idAlternativa,
   }) async {
-    final response = await _request(() => http.post(
-      Uri.parse('$baseUrl/perguntas/$idPergunta/resposta'),
-      headers: {'Content-Type': 'application/json; charset=utf-8'},
-      body: jsonEncode({'id_alternativa': idAlternativa}),
-    ));
+    final response = await _request(
+      () => http.post(
+        Uri.parse('$baseUrl/perguntas/$idPergunta/resposta'),
+        headers: {'Content-Type': 'application/json; charset=utf-8'},
+        body: jsonEncode({'id_alternativa': idAlternativa}),
+      ),
+    );
     final body = _decode(response);
     if (response.statusCode != 200) {
-      throw QuizApiException(_message(body, 'Não foi possível verificar a resposta.'));
+      throw QuizApiException(
+        _message(body, 'Não foi possível verificar a resposta.'),
+      );
     }
     return body['correta'] == true;
   }
 
   static Future<void> excluirPergunta(int id) async {
-    final response = await _request(() => http.delete(Uri.parse('$baseUrl/perguntas/$id')));
+    final response = await _request(
+      () => http.delete(Uri.parse('$baseUrl/perguntas/$id')),
+    );
     final body = _decode(response);
     if (response.statusCode != 200) {
-      throw QuizApiException(_message(body, 'Não foi possível excluir a pergunta.'));
+      throw QuizApiException(
+        _message(body, 'Não foi possível excluir a pergunta.'),
+      );
     }
   }
 
@@ -128,14 +146,18 @@ class QuizApiService {
   static List<Map<String, dynamic>> _decodeList(http.Response response) {
     if (response.statusCode != 200) {
       final body = _decode(response);
-      throw QuizApiException(_message(body, 'Não foi possível carregar os temas.'));
+      throw QuizApiException(
+        _message(body, 'Não foi possível carregar os temas.'),
+      );
     }
     try {
       final decoded = jsonDecode(utf8.decode(response.bodyBytes));
       if (decoded is! List) throw const FormatException();
       return decoded.cast<Map<String, dynamic>>();
     } on FormatException {
-      throw const QuizApiException('A API retornou uma lista de temas inválida.');
+      throw const QuizApiException(
+        'A API retornou uma lista de temas inválida.',
+      );
     }
   }
 

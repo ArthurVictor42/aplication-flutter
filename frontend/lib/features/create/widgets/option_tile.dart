@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
-/// Uma alternativa: [letra] [campo de texto] [marcador de correta].
 class OptionTile extends StatelessWidget {
   const OptionTile({
     super.key,
@@ -12,9 +11,9 @@ class OptionTile extends StatelessWidget {
     required this.onSelected,
   });
 
-  final String letter; // "A", "B", "C" ou "D"
+  final String letter;
   final TextEditingController controller;
-  final bool selected; // true = esta é a alternativa correta
+  final bool selected;
   final VoidCallback onSelected;
 
   @override
@@ -28,13 +27,16 @@ class OptionTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Caixa da letra: escura se for a correta, clara nas demais.
           Container(
             width: 36,
             height: 36,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: selected ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF303247) : AppColors.palePurple),
+              color: selected
+                  ? AppColors.primary
+                  : (Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF303247)
+                        : AppColors.palePurple),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
@@ -50,7 +52,10 @@ class OptionTile extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
-              style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
               decoration: const InputDecoration(
                 hintText: 'Digite a alternativa...',
                 hintStyle: TextStyle(fontSize: 14, color: AppColors.hint),
@@ -60,7 +65,6 @@ class OptionTile extends StatelessWidget {
               ),
             ),
           ),
-          // GestureDetector detecta o toque; o Padding aumenta a área clicável.
           GestureDetector(
             onTap: onSelected,
             behavior: HitTestBehavior.opaque,
